@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Engineer Roadmap - Интерактивная</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 30px 100px rgba(0,0,0,0.4);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .progress-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.3);
+            border-radius: 15px;
+            height: 40px;
+            margin-top: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+            height: 100%;
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            width: 0%;
+        }
+
+        .roadmap-container {
+            position: relative;
+            padding: 20px;
+        }
+
+        .roadmap-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #667eea, #764ba2, #f093fb);
+            transform: translateX(-50%);
+        }
+
+        .stage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .stage:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .stage:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .stage-content {
+            width: 45%;
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid #e0e0e0;
+            position: relative;
+        }
+
+        .stage-content:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .stage-content.completed {
+            border-color: #11998e;
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+        }
+
+        .stage-content.in-progress {
+            border-color: #f093fb;
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+        }
+
+        .stage-number {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            z-index: 10;
+            border: 5px solid white;
+        }
+
+        .stage.completed .stage-number {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .stage.in-progress .stage-number {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .stage-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .stage-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .stage-time {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .stage-desc {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .status-badge.pending {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .status-badge.in-progress {
+            background: #f093fb;
+            color: white;
+        }
+
+        .status-badge.completed {
+            background: #38ef7d;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: #e0e0e0;
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .modal-section {
+            margin-bottom: 20px;
+        }
+
+        .modal-section h3 {
+            color: #764ba2;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .modal-section p, .modal-section ul {
+            color: #666;
+            line-height: 1.6;
+            font-size: 1em;
+        }
+
+        .modal-section ul {
+            padding-left: 20px;
+        }
+
+        .modal-section li {
+            margin-bottom: 8px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+
+        .btn-pending {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .btn-progress {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-completed {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn-control {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            margin: 0 10px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .btn-control:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .stage {
+                flex-direction: column !important;
+            }
+            .stage-content {
+                width: 80%;
+                margin: 30px 0;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 ML Engineer Career Roadmap</h1>
+        <p class="subtitle">Интерактивный путь от основ до CEO</p>
+
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-value" id="totalSkills">0</div>
+                <div class="stat-label">Всего этапов</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="completedCount">0</div>
+                <div class="stat-label">Пройдено</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="progressCount">0</div>
+                <div class="stat-label">В процессе</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="currentLevel">Start</div>
+                <div class="stat-label">Уровень</div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <h2>📊 Общий прогресс</h2>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+        </div>
+
+        <div class="roadmap-container">
+            <div class="roadmap-line"></div>
+            <div id="roadmapStages"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-control" onclick="saveData()">💾 Сохранить</button>
+            <button class="btn-control" onclick="loadData()">📂 Загрузить</button>
+            <button class="btn-control" onclick="resetData()">🔄 Сбросить</button>
+        </div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <div class="modal-section">
+                <h3>📖 Описание</h3>
+                <p id="modalDesc"></p>
+            </div>
+            <div class="modal-section">
+                <h3>🎯 Что включает</h3>
+                <ul id="modalDetails"></ul>
+            </div>
+            <div class="modal-section">
+                <h3>⏱️ Время</h3>
+                <p id="modalTime"></p>
+            </div>
+            <div class="modal-section">
+                <h3>📚 Ресурсы</h3>
+                <ul id="modalResources"></ul>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-pending" onclick="setStatus('pending')">⏳ Не начато</button>
+                <button class="btn btn-progress" onclick="setStatus('in-progress')">🔄 В процессе</button>
+                <button class="btn btn-completed" onclick="setStatus('completed')">✅ Пройдено</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const roadmapData = [
+            {
+                id: 1,
+                title: "Introduction to Machine Learning",
+                icon: "🤖",
+                time: "1-2 месяца",
+                description: "Основы ML, важность, реальные применения и карьерные возможности",
+                details: [
+                    "Что такое машинное обучение",
+                    "Типы ML: supervised, unsupervised, reinforcement",
+                    "Реальные кейсы применения",
+                    "Карьерные пути в ML"
+                ],
+                resources: ["Coursera: ML by Andrew Ng", "Kaggle Learn", "YouTube: 3Blue1Brown"]
+            },
+            {
+                id: 2,
+                title: "Mathematics Foundations",
+                icon: "📐",
+                time: "2-3 месяца",
+                description: "Вероятность, статистика, линейная алгебра, дискретная математика",
+                details: [
+                    "Линейная алгебра: матрицы, векторы",
+                    "Теория вероятностей",
+                    "Математическая статистика",
+                    "Математический анализ",
+                    "Дискретная математика"
+                ],
+                resources: ["Khan Academy", "MIT OpenCourseWare", "Stepik"]
+            },
+            {
+                id: 3,
+                title: "Programming Skills",
+                icon: "💻",
+                time: "2-3 месяца",
+                description: "Python, R, Java с фокусом на NumPy, Pandas, Matplotlib",
+                details: [
+                    "Python: синтаксис, ООП",
+                    "NumPy: работа с массивами",
+                    "Pandas: анализ данных",
+                    "Matplotlib/Seaborn: визуализация",
+                    "Git и GitHub"
+                ],
+                resources: ["Python.org", "Real Python", "LeetCode"]
+            },
+            {
+                id: 4,
+                title: "Database Management",
+                icon: "🗄️",
+                time: "1 месяц",
+                description: "MySQL, MongoDB, основы запросов к базам данных",
+                details: [
+                    "SQL: SELECT, INSERT, UPDATE, DELETE",
+                    "JOIN и агрегации",
+                    "NoSQL: MongoDB",
+                    "Оптимизация запросов",
+                    "Индексы"
+                ],
+                resources: ["SQLZoo", "HackerRank SQL", "MongoDB University"]
+            },
+            {
+                id: 5,
+                title: "Data Wrangling and Preprocessing",
+                icon: "🔧",
+                time: "1-2 месяца",
+                description: "Очистка данных, обработка пропусков, feature engineering",
+                details: [
+                    "Обработка пропущенных значений",
+                    "Очистка данных",
+                    "Feature engineering",
+                    "Нормализация и стандартизация",
+                    "Работа с выбросами"
+                ],
+                resources: ["Kaggle courses", "DataCamp", "Pandas documentation"]
+            },
+            {
+                id: 6,
+                title: "Machine Learning Libraries",
+                icon: "📚",
+                time: "2-3 месяца",
+                description: "Scikit-learn, TensorFlow, PyTorch, интеграция библиотек",
+                details: [
+                    "Scikit-learn: основные алгоритмы",
+                    "TensorFlow basics",
+                    "PyTorch basics",
+                    "Model training и evaluation",
+                    "Pipeline создание"
+                ],
+                resources: ["Scikit-learn.org", "TensorFlow.org", "PyTorch.org"]
+            },
+            {
+                id: 7,
+                title: "Supervised and Unsupervised Learning",
+                icon: "🎓",
+                time: "3-4 месяца",
+                description: "Классификация, регрессия, кластеризация, reinforcement learning",
+                details: [
+                    "Линейная регрессия",
+                    "Логистическая регрессия",
+                    "Decision Trees, Random Forest",
+                    "K-means clustering",
+                    "PCA, SVM"
+                ],
+                resources: ["Andrew Ng ML Course", "Hands-On ML book", "Fast.ai"]
+            },
+            {
+                id: 8,
+                title: "ML Algorithms",
+                icon: "⚙️",
+                time: "2-3 месяца",
+                description: "Linear/Logistic Regression, Decision Trees, KNN, Random Forest, SVM",
+                details: [
+                    "Gradient Boosting (XGBoost, LightGBM)",
+                    "Neural Networks basics",
+                    "Ensemble methods",
+                    "Hyperparameter tuning",
+                    "Cross-validation"
+                ],
+                resources: ["Kaggle competitions", "ML Mastery", "Towards Data Science"]
+            },
+            {
+                id: 9,
+                title: "Deep Learning Fundamentals",
+                icon: "🧠",
+                time: "3-4 месяца",
+                description: "Нейронные сети, TensorFlow, Keras, CNN, RNN, GANs",
+                details: [
+                    "Neural Networks архитектура",
+                    "Backpropagation",
+                    "CNN для изображений",
+                    "RNN/LSTM для временных рядов",
+                    "GANs и генеративные модели"
+                ],
+                resources: ["DeepLearning.AI", "Fast.ai", "Deep Learning book"]
+            },
+            {
+                id: 10,
+                title: "Model Evaluation and Tuning",
+                icon: "📊",
+                time: "1-2 месяца",
+                description: "Cross-validation, hyperparameter tuning, performance metrics",
+                details: [
+                    "Metrics: accuracy, precision, recall, F1",
+                    "ROC-AUC曲线",
+                    "Grid Search, Random Search",
+                    "Cross-validation техники",
+                    "Bias-Variance tradeoff"
+                ],
+                resources: ["Scikit-learn docs", "ML model evaluation guides"]
+            },
+            {
+                id: 11,
+                title: "Data Visualization",
+                icon: "📈",
+                time: "1 месяц",
+                description: "Tableau, QlikView, PowerBI для создания инсайтов",
+                details: [
+                    "Tableau basics",
+                    "PowerBI",
+                    "Plotly, Bokeh",
+                    "Data storytelling",
+                    "Dashboard создание"
+                ],
+                resources: ["Tableau Public", "PowerBI learning", "Data visualization books"]
+            },
+            {
+                id: 12,
+                title: "Machine Learning Deployment",
+                icon: "🚀",
+                time: "2-3 месяца",
+                description: "Deployment с AWS, Azure, Docker для production",
+                details: [
+                    "Docker контейнеризация",
+                    "REST API (FastAPI, Flask)",
+                    "Cloud: AWS/Azure/GCP",
+                    "MLOps basics",
+                    "CI/CD для ML",
+                    "Model monitoring"
+                ],
+                resources: ["Docker docs", "AWS ML courses", "MLOps Zoomcamp"]
+            }
+        ];
+
+        let currentStage = null;
+        let progress = {};
+
+        function renderRoadmap() {
+            const container = document.getElementById('roadmapStages');
+            container.innerHTML = '';
+
+            roadmapData.forEach((stage, index) => {
+                const stageDiv = document.createElement('div');
+                stageDiv.className = 'stage';
+                stageDiv.id = `stage-${stage.id}`;
+                
+                const status = progress[stage.id] || 'pending';
+                if (status !== 'pending') {
+                    stageDiv.classList.add(status);
+                }
+
+                const statusText = {
+                    'pending': 'Не начато',
+                    'in-progress': 'В процессе',
+                    'completed': 'Пройдено'
+                };
+
+                stageDiv.innerHTML = `
+                    <div class="stage-number">${stage.id}</div>
+                    <div class="stage-content ${status}" onclick="openModal(${stage.id})">
+                        <span class="status-badge ${status}">${statusText[status]}</span>
+                        <div class="stage-icon">${stage.icon}</div>
+                        <div class="stage-title">${stage.title}</div>
+                        <div class="stage-time">${stage.time}</div>
+                        <div class="stage-desc">${stage.description}</div>
+                    </div>
+                `;
+
+                container.appendChild(stageDiv);
+            });
+
+            updateStats();
+        }
+
+        function openModal(id) {
+            currentStage = roadmapData.find(s => s.id === id);
+            if (!currentStage) return;
+
+            document.getElementById('modalTitle').textContent = `${currentStage.icon} ${currentStage.title}`;
+            document.getElementById('modalDesc').textContent = currentStage.description;
+            document.getElementById('modalTime').textContent = currentStage.time;
+            
+            const detailsList = document.getElementById('modalDetails');
+            detailsList.innerHTML = currentStage.details.map(d => `<li>${d}</li>`).join('');
+            
+            const resourcesList = document.getElementById('modalResources');
+            resourcesList.innerHTML = currentStage.resources.map(r => `<li>${r}</li>`).join('');
+
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            currentStage = null;
+        }
+
+        function setStatus(status) {
+            if (currentStage) {
+                progress[currentStage.id] = status;
+                localStorage.setItem('mlRoadmapProgress', JSON.stringify(progress));
+                
+                const stageDiv = document.getElementById(`stage-${currentStage.id}`);
+                stageDiv.classList.remove('pending', 'in-progress', 'completed');
+                if (status !== 'pending') {
+                    stageDiv.classList.add(status);
+                }
+                
+                const badge = stageDiv.querySelector('.status-badge');
+                badge.textContent = {
+                    'pending': 'Не начато',
+                    'in-progress': 'В процессе',
+                    'completed': 'Пройдено'
+                }[status];
+                badge.className = `status-badge ${status}`;
+                
+                closeModal();
+                updateStats();
+            }
+        }
+
+        function updateStats() {
+            const total = roadmapData.length;
+            const completed = Object.values(progress).filter(s => s === 'completed').length;
+            const inProgress = Object.values(progress).filter(s => s === 'in-progress').length;
+            const percent = Math.round(((completed + inProgress * 0.5) / total) * 100);
+
+            document.getElementById('totalSkills').textContent = total;
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('progressCount').textContent = inProgress;
+            
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = percent + '%';
+            progressFill.textContent = percent + '%';
+
+            let level = 'Start';
+            if (completed >= 10) level = 'Lead/CEO';
+            else if (completed >= 7) level = 'Senior';
+            else if (completed >= 5) level = 'Middle';
+            else if (completed >= 3) level = 'Junior';
+            else if (completed >= 1) level = 'Beginner';
+            
+            document.getElementById('currentLevel').textContent = level;
+        }
+
+        function saveData() {
+            localStorage.setItem('mlRoadmapProgress', JSON.stringify(progress));
+            alert('✅ Прогресс сохранен!');
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('mlRoadmapProgress');
+            if (saved) {
+                progress = JSON.parse(saved);
+                renderRoadmap();
+                alert('✅ Прогресс загружен!');
+            } else {
+                alert('ℹ️ Сохраненных данных нет');
+            }
+        }
+
+        function resetData() {
+            if (confirm('⚠️ Сбросить весь прогресс?')) {
+                progress = {};
+                localStorage.removeItem('mlRoadmapProgress');
+                renderRoadmap();
+                alert('🔄 Прогресс сброшен');
+            }
+        }
+
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Initialize
+        window.onload = function() {
+            const saved = localStorage.getItem('mlRoadmapProgress');
+            if (saved) {
+                progress = JSON.parse(saved);
+            }
+            renderRoadmap();
+        };
+    </script>
+</body>
+</html>
