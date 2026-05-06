@@ -6,24 +6,25 @@
     <title>Roadmap Data Scientist — интерактивный</title>
     <style>
         :root {
-            --bg-1: #1c1406;
-            --bg-2: #3a2a10;
-            --surface: #241a08;
-            --card: #2d210c;
-            --text-main: #e9cf72;
-            --text-muted: #c9ad55;
-            --amber-1: #e2c05a;
-            --amber-2: #d6ac3d;
-            --amber-3: #f0d57f;
-            --completed: #b38d2b;
-            --progress: #8d6a16;
-            --pending: #5d4b21;
+            --black: #000000;
+            --charcoal: #2c2c2c;
+            --slate: #6b7280;
+            --gold: #ffd700;
+            --white: #ffffff;
+            --surface: #111111;
+            --card: #1a1a1a;
+            --line: #414141;
+            --text-main: #ffffff;
+            --text-muted: #c9ced8;
+            --completed: #ffd700;
+            --progress: #f5e6cc;
+            --pending: #6b7280;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: "Segoe UI", Tahoma, sans-serif;
-            background: linear-gradient(180deg, #1a1205 0%, var(--bg-1) 50%, #100b03 100%);
+            background: linear-gradient(180deg, #000000 0%, #0f0f0f 45%, #1a1a1a 100%);
             color: var(--text-main);
             min-height: 100vh;
             padding: 20px;
@@ -32,29 +33,29 @@
             max-width: 1200px;
             margin: 0 auto;
             background: var(--surface);
-            border: 1px solid #7d6322;
+            border: 1px solid var(--line);
             padding: 30px;
             box-shadow: 0 25px 80px rgba(0,0,0,.45);
         }
-        h1 { text-align: center; color: var(--amber-1); margin-bottom: 8px; }
+        h1 { text-align: center; color: var(--gold); margin-bottom: 8px; }
         .subtitle { text-align: center; color: var(--text-muted); margin-bottom: 24px; }
 
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
         .stat-box {
-            background: #33260e;
-            color: var(--amber-3); padding: 16px; text-align: center; border: 1px solid #8f6f27;
+            background: #1e1e1e;
+            color: var(--white); padding: 16px; text-align: center; border: 1px solid var(--line);
         }
         .stat-value { font-size: 2rem; font-weight: 700; }
         .stat-label { font-size: .9rem; opacity: .9; }
 
         .progress-section {
-            background: #33260e;
-            color: var(--amber-3); padding: 18px; margin-bottom: 30px; border: 1px solid #8f6f27;
+            background: #1e1e1e;
+            color: var(--white); padding: 18px; margin-bottom: 30px; border: 1px solid var(--line);
         }
-        .progress-bar { margin-top: 10px; background: #1f1607; height: 34px; overflow: hidden; border: 1px solid #8f6f27; }
+        .progress-bar { margin-top: 10px; background: #101010; height: 34px; overflow: hidden; border: 1px solid var(--line); }
         .progress-fill {
             height: 100%; width: 0; display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(90deg, #8f6e1e, var(--amber-2)); color: #1a1205; font-weight: 700;
+            background: linear-gradient(90deg, var(--progress), var(--gold)); color: var(--black); font-weight: 700;
             transition: width .35s ease;
         }
 
@@ -66,7 +67,7 @@
             bottom: 0;
             left: 50%;
             width: 2px;
-            background: #a8842d;
+            background: var(--slate);
             transform: translateX(-50%);
         }
         .stage { display: flex; position: relative; }
@@ -75,12 +76,12 @@
         .stage-content {
             width: min(520px, 94%);
             background: var(--card);
-            border: 1px solid #9d7d2f;
+            border: 1px solid var(--line);
             padding: 18px 18px 16px 18px;
             position: relative;
             cursor: pointer;
             transition: transform .5s ease, opacity .5s ease, box-shadow .25s;
-            box-shadow: 0 10px 25px rgba(44, 28, 11, .15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .25);
         }
         .stage-content.reveal {
             opacity: 0;
@@ -90,49 +91,49 @@
             opacity: 1;
             transform: translateY(0);
         }
-        .stage-content:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(44,28,11,.23); }
-        .stage-content.completed { border-color: #b89332; background: #35280f; }
-        .stage-content.in-progress { border-color: #d0a63a; background: #3a2b10; }
+        .stage-content:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0,0,0,.35); }
+        .stage-content.completed { border-color: #ffd700; background: #242017; }
+        .stage-content.in-progress { border-color: #f5e6cc; background: #2c2c2c; }
 
         .stage-number {
             position: absolute; top: -12px; left: -12px; width: 34px; height: 34px;
-            background: #8e6e20; color: #1a1205; font-weight: 700;
-            display: flex; align-items: center; justify-content: center; border: 2px solid #f7e9cf;
-            box-shadow: 0 5px 14px rgba(93,58,20,.45);
+            background: var(--gold); color: var(--black); font-weight: 700;
+            display: flex; align-items: center; justify-content: center; border: 2px solid var(--white);
+            box-shadow: 0 5px 14px rgba(0,0,0,.45);
         }
 
         .snake-link {
-            position: absolute; top: 50%; width: 90px; height: 2px; background: #a8842d;
+            position: absolute; top: 50%; width: 90px; height: 2px; background: var(--slate);
         }
         .stage.left .snake-link { right: -90px; }
         .stage.right .snake-link { left: -90px; }
 
-        .stage-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; color: var(--amber-3); }
-        .stage-time { display: inline-block; background: #8f6e1e; color: #1b1305; padding: 4px 12px; font-size: .85rem; margin-bottom: 8px; }
+        .stage-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; color: var(--white); }
+        .stage-time { display: inline-block; background: var(--gold); color: var(--black); padding: 4px 12px; font-size: .85rem; margin-bottom: 8px; }
         .stage-desc { color: var(--text-muted); line-height: 1.45; }
         .stage-icon { font-size: 1.8rem; margin-bottom: 6px; }
 
         .status-badge { position: absolute; top: 10px; right: 10px; font-size: .78rem; font-weight: 700; padding: 5px 10px; }
-        .status-badge.completed { background: #b89332; color: #1a1205; }
-        .status-badge.in-progress { background: #d0a63a; color: #1a1205; }
-        .status-badge.pending { background: var(--pending); color: var(--amber-3); }
+        .status-badge.completed { background: var(--gold); color: var(--black); }
+        .status-badge.in-progress { background: var(--progress); color: var(--black); }
+        .status-badge.pending { background: var(--pending); color: var(--white); }
 
         .controls { text-align: center; margin-top: 28px; }
         .btn-control, .btn {
-            border: 1px solid #8f6f27; padding: 11px 22px; cursor: pointer; font-weight: 700;
+            border: 1px solid var(--line); padding: 11px 22px; cursor: pointer; font-weight: 700;
         }
-        .btn-control { margin: 0 6px; background: #3a2b10; color: var(--amber-3); }
+        .btn-control { margin: 0 6px; background: #2c2c2c; color: var(--white); }
 
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.74); align-items: center; justify-content: center; }
-        .modal-content { width: min(760px, 92%); max-height: 85vh; overflow: auto; background: #2d210c; border: 1px solid #8f6f27; padding: 28px; position: relative; }
-        .modal-close { position: absolute; top: 14px; right: 14px; width: 34px; height: 34px; border: 1px solid #8f6f27; background: #3a2b10; color: var(--amber-3); cursor: pointer; }
-        .modal-title { color: var(--amber-1); margin-bottom: 14px; }
+        .modal-content { width: min(760px, 92%); max-height: 85vh; overflow: auto; background: #1a1a1a; border: 1px solid var(--line); padding: 28px; position: relative; }
+        .modal-close { position: absolute; top: 14px; right: 14px; width: 34px; height: 34px; border: 1px solid var(--line); background: #2c2c2c; color: var(--white); cursor: pointer; }
+        .modal-title { color: var(--gold); margin-bottom: 14px; }
         .modal-section { margin-bottom: 14px; }
-        .modal-section h3 { color: var(--amber-2); margin-bottom: 6px; }
+        .modal-section h3 { color: var(--progress); margin-bottom: 6px; }
 
-        .btn-pending { background: #5d4b21; color: var(--amber-3); }
-        .btn-progress { background: #a8842d; color: #1a1205; }
-        .btn-completed { background: #caa23b; color: #1a1205; }
+        .btn-pending { background: var(--slate); color: var(--white); }
+        .btn-progress { background: var(--progress); color: var(--black); }
+        .btn-completed { background: var(--gold); color: var(--black); }
 
         @media (max-width: 900px) {
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
